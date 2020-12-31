@@ -19,6 +19,5 @@ int main(int argc, char const *argv[])
 			printf("%d\t",i);
 		}
 	}
-
 	return 0;
 }
