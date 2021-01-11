@@ -3,7 +3,7 @@
 * @Date:   2021-01-11 13:16:00
 * @Email:  wpgraceii@163.com
 * @Last Modified by:   Jeffery Wang
-* @Last Modified time: 2021-01-11 14:08:26
+* @Last Modified time: 2021-01-11 14:45:31
 * @Description: 
 */
 
@@ -136,5 +136,79 @@ int insertAddressInfo(addressInfo f,int countPerson){
 	printf("请问你要在哪一个用户前插入 ，请输入联系人的姓名:\n");
 	scanf("%s",username);
 	i = findAddressinfo(f,countPerson,username);
+	for (j = countPerson -1;j>=i;j++) //数据加载位置i后面 i以后的数据往后移一个位置
+	{
+			memcpy(&f[j+1],&f[j],sizeof(addressInfo));
+	}
+
+	memcpy(&f[i],&tmpAi,sizeof(addressInfo));
+	countPerson ++;
+	return countPerson;
 }
 
+void saveAddressInfo(addressInfo f[],int countPerson){
+	int i;
+	FILE *fp;
+
+	if(NULL ==(fp = fopen("addressInfo.txt","wb"))){
+		printf("文件打不开");
+		exit(-1);
+	}
+
+	printf("\n*************开始保存文件*****************\n");
+	fprintf(fp, "%d",countPerson ); //将记录数写入文件
+	fprintf(fp, "\r\n"); //写入换行
+	for (i = 0; i < countPerson ; ++i)
+	{
+		fprintf(fp, "%-6s%-10s%-10s%-10s%-10s%-10s\n", f[i].name,f[i].corp,f[i].phone,f[i].address,f[i].QQ,f[i].mail);
+		fprintf(fp, "\r\n"); //写入换行
+	}
+	fclose(fp);
+	printf("-------------保存成功----------------\n");
+	printf("按任意键继续！\n");
+	getch();
+}
+
+//从文件中读取信息
+int readAddressInfo(addressInfo f[]){
+	FILE *fp = NULL;
+	int i=0,countPerson = 0;
+	if(NULL ==(fopen("addressInfo.txt","rb"))){
+		printf("不能打开文件\n");
+		exit(1);
+	}
+
+	fscanf(fp,"%d",&countPerson);
+	printf("\n******************开始读取文件********************\n");
+	for (int i = 0; i < countPerson; ++i)
+	{
+		fscanf(fp, "%6s%10s%10s%10s%10s%10s\n", f[i].name,f[i].corp,f[i].phone,f[i].address,f[i].QQ,f[i].mail);
+	}
+	fclose(fp);
+	printf("-------------读取成功----------------\n");
+	return countPerson;
+}
+
+//显示所有地址信息
+void displayAllAddressInfo(addressInfo f[],int countPerson){
+	int i;
+	for (int i = 0; i < countPerson; ++i)
+	{
+		outputAddressInfo(f[i]);
+		printf("\r\n");
+	}
+}
+
+int main(int argc, char const *argv[])
+{
+	int c = 0;
+	c = selectMenu();
+	switch(c){
+		case 0:
+			addNewAddressInfo();
+			break;
+		case 1:
+			deleteAddressInfo()
+	}
+	return 0;
+}
