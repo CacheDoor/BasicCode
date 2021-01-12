@@ -5,7 +5,7 @@
 int main(int argc, char const *argv[])
 {
 	int radius; //定义半径
-	int circum; //定义周长
+	float circum; //定义周长
 	radius = 10;
 	circum = radius*2*PI; //计算周长
 	printf("-----------------------------\n");
